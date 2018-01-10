@@ -4,7 +4,7 @@ var todoStorage = {
     };
     // This are the primary function that the system will be using 
     todoStorage.init = function(){
-        this.collection = JSON.parse(location.getItem('toda')|| '[]');
+        this.collection = JSON.parse(localStorage.getItem('toda')|| '[]');
     };
     todoStorage.hasItem = function(label){
         return this.collection.some(function(item){
@@ -36,9 +36,9 @@ var todoStorage = {
         
         this.collection.forEach(function(item, i){
             if(item.label === label){
-                this.collection.splice(i, l)
+                this.collection.splice(i, 1)
             }            
-         });
+         }.bind(this));
         
         this.save();
         
@@ -61,7 +61,7 @@ var todoStorage = {
         return true;
     };
     
-    todoStorage.fliter = function(status){
+    todoStorage.filter = function(status){
         if (status === 'all') {
             return this.collection;
         }
