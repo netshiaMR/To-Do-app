@@ -1,4 +1,4 @@
-// This is a JavaScript file
+// This is a JavaScript file thanks... i have to check this out is easy..
 var todo = {
         filterFlag : 'all'    
     };
