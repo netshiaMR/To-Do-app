@@ -16,15 +16,15 @@
  
     <ons-list id="todo-list"></ons-list>
     
-    <script id="todo-list-items" type="text/template">
+    <script id="todo-list-item" type="text/template">
         <ons-list-item>            
              <label class="left">
-                <ons-input type="checkbox" {{checked}}></ons-input>
+                <ons-checkbox {{checked }}></ons-checkbox>
             </label>
             <div class="label">
                 {{label}}
             </div>
-            <div class="rigth">
+            <div class="right">
                 <ons-icon style="" icon="fa-trash-o"></ons-icon>        
             </div>        
         </ons-list-item>

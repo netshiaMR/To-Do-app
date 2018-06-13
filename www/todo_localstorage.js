@@ -1,10 +1,19 @@
 // This is a JavaScript file
+
+var localStorage = null;
+
+if(window.localStorage){
+  localStorage = window.localStorage
+}
+
 var todoStorage = {
         collection :[]
     };
+   
+   
     // This are the primary function that the system will be using 
     todoStorage.init = function(){
-        this.collection = JSON.parse(location.getItem('toda')|| '[]');
+        this.collection = JSON.parse(localStorage.getItem('todo') || '[]');
     };
     todoStorage.hasItem = function(label){
         return this.collection.some(function(item){
@@ -17,12 +26,13 @@ var todoStorage = {
     };
     
     todoStorage.add = function(label){
+      
         if(this.hasItem(label)){                
                 return false;
             }    
         this.collection.push({
-                label:label,
-                status : 'uncompleted'
+                label: label,
+                status:'uncompleted'
             });
         this.save();
         
@@ -61,7 +71,7 @@ var todoStorage = {
         return true;
     };
     
-    todoStorage.fliter = function(status){
+    todoStorage.filter = function(status){
         if (status === 'all') {
             return this.collection;
         }

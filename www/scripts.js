@@ -1,12 +1,22 @@
-// This is a JavaScript file
+// This is a JavaScript file thanks... i have to check this out is easy..
 var todo = {
-        fliterFlag : 'all'    
+        filterFlag : 'all'    
     };
 
 document.addEventListener('init', function(event){
-    var view = event.target.id;
-        if (view === 'menu' || view === 'list') {
-            todo [view + 'Init'](event.target);
+    var view = event.target.id || "list";
+        switch(view){
+          
+            // case "menu":
+            //    todo.menuInit(event.target);
+            //    break;
+
+            case "list":
+             todo.listInit(event.target);
+             break;
+
+             default: 
+               return new Error();
         }
 }, false);
 
@@ -17,23 +27,24 @@ todo.listInit = function(target){
             document.querySelector('#splitter-menu').open();
         });
         
-    target.querySelector('#add').addEventListener('click', this.addItemPromt.bind(this));
+    target.querySelector('#add').addEventListener('click', this.addItemPromt.bind(this ));
    
    todoStorage.init();
    
-   this.refersh();
+   this.refresh();
     
 };
 todo.addItemPromt = function(){
-    ons.notification.prompt ({message: 'Enter To-Do item',
+    ons.notification.prompt({message: 'Enter To-Do item',
         title : 'New Item',
-        cancallabel : true,
+        cancellable : true,
         
         callback : function(label){
             if (label === '' || label === null) {
                 return;
             }             
-            if (todoStorage.add()) {
+
+            if (todoStorage.add(label)) {
                 this.refresh();
             }else{
                 ons.notification.alert('Fail to add new item on to-do list ');
@@ -45,25 +56,26 @@ todo.addItemPromt = function(){
 todo.refresh = function(){
     var items = todoStorage.filter(this.filterFlag);
     
-    this.list.innerHTML = items.map(function(item){
-       return document.querySelector('#todo-list-item').innerHTML
+    this.list.innerHTML = items.map(function(item, i){
+        var listItem = document.querySelector('#todo-list-item').innerHTML;
+        
+        console.log(i);
+       
+        if(listItem === null){
+          return new Error("No Items to add");
+       } 
+       return listItem
         .replace('{‌{label}}', item.label)
         .replace('{‌{checked}}', item.status === 'completed'? 'checked' : '');
     }).join('');
     
     var children = this.list.children;
     
-    this.events.forEach(function(event, i){
-       event.element.removeEventListener('click', event.function); 
-    });
     
-    
-    this.events = [];
-    var event = {};
-    
+ 
     items.forEach(function(item, i){
         event = {
-          element: children[i].querySelector('ons-input'),
+          element: children[i].querySelector('ons-checkbox'),
           function: this.toggleStatus.bind(this, item.label)
         };
         this.events.push(event);
@@ -75,5 +87,15 @@ todo.refresh = function(){
         };
         this.events.push(event);
         event.element.addEventListener('click', event.function);
-    }.bind(todo));    
+    }.bind(todo));   
+    
+    
+    this.events = [];
+    var event = {};
+    
+
+    this.events.forEach(function(event, i){
+       event.element.removeEventListener('click', event.function); 
+    });
+    
 };
